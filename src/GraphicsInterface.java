@@ -6,10 +6,7 @@ import java.awt.*;
 /**
  * Created by Icamer on 11.09.2016.
  */
-public class GraphicsInterface{//test potęgi linuxa xD i nic więcej
-    //tak w ogóle ciekawym jest jak płynnie to wszystko może chulać i jak cicho chodzić no bo
-//    jednak z jakiegoś powodu z reguły klepię w te wszystkie literki dość mocno, a wcale nie trzeba po prostu tak o
-
+public class GraphicsInterface{//ass
     //declaring components and their hierarchy
     JFrame jFrame;
     JPanel jPanel;
