@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by Icamer on 11.09.2016.
  */
-public class GraphicsInterface{//ass
+public class GraphicsInterface{
     //declaring components and their hierarchy
     JFrame jFrame;
     JPanel jPanel;
@@ -118,7 +118,7 @@ public class GraphicsInterface{//ass
                 onEnterPressed();
             }
             else{
-                System.out.println("key pressed: " + e.getKeyChar() + "of code: " + e.getKeyCode());
+                System.out.println("key pressed: \'" + e.getKeyChar() + "\' of code: " + e.getKeyCode());
             }
         }
     }
@@ -128,6 +128,7 @@ public class GraphicsInterface{//ass
         jTextField.setText("");
         System.out.println(consoleText);
         jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum()); //przewija jScrollPane na dol
+        CommandRegex.regexChecker("\"[A-Za-z ążźćłęóś]{0,100}\"|[A-Za-zążźćłęóś]{0,100}",consoleText);
 
 
     }
