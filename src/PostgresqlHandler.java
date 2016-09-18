@@ -5,6 +5,7 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Objects;
 
 
 public class PostgresqlHandler {
@@ -22,9 +23,11 @@ public class PostgresqlHandler {
     public void openDatebase(String port, String login, String password){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:"+port+"/postgres", login, password);
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:"+port+"/RolePlayBase", login, password);
             c.setAutoCommit(false);
-            stmt = c.createStatement();
+            stmt = c.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             System.out.println("Opened database successfully");
 
         } catch (Exception e) {
@@ -47,10 +50,9 @@ public class PostgresqlHandler {
 
     }
 
-    public void insertHandler(Connection c, Statement stmt){
+    public void insertHandler(String tablica, String typyDanych, String listaDanych){
         try{
-            String sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
-                    + "VALUES (1, 'Paul', 32, 'California', 20000.00 );";
+            String sql = "INSERT INTO "+ tablica +"("+typyDanych+")" + "VALUES ("+listaDanych+");";
             stmt.executeUpdate(sql);
         } catch (SQLException e){
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
@@ -58,21 +60,55 @@ public class PostgresqlHandler {
         }
     }
 
-    public void selectHandler(Connection c, Statement stmt){
+//    public void selectHandler(String[] typesOfSelect, String[] nameOfField, String whatToSelect){
+//        try{
+//            ResultSet rs = stmt.executeQuery( "SELECT " + whatToSelect + ";" );
+//            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+//            int columnCount = resultSetMetaData.getColumnCount();
+////            rs.last();
+////            System.out.println(rs.getRow());      ustalenie ilosci rzędów jest obecnie niepotrzebne
+////            rs.beforeFirst();
+//            while ( rs.next() ) {
+//
+//                System.out.println("Kappa");
+//                for(int whichType=1; whichType<=columnCount;whichType++){
+//                    try{
+//                        Object o = rs.getObject(whichType);
+//                        Class klasa = o.getClass();
+//                        System.out.println("wartosc obiektu: " + o + "\t\tobiekt typu: " + klasa);
+//
+//                    }catch(NullPointerException e){
+//                        System.out.println("kolumna " + whichType + " \t\t\t\tnie posiada wartosci");
+//                    }
+//                }
+//            }
+//        }
+//        catch (SQLException e){
+//            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+//            System.exit(0);
+//        }
+//    }
+    public void selectHandler(String whatToSelect){
         try{
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY;" );
+            ResultSet rs = stmt.executeQuery( "SELECT " + whatToSelect + ";" );
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            int columnCount = resultSetMetaData.getColumnCount();
+//            rs.last();
+//            System.out.println(rs.getRow());      ustalenie ilosci rzędów jest obecnie niepotrzebne
+//            rs.beforeFirst();
             while ( rs.next() ) {
-                int id = rs.getInt("id");
-                String  name = rs.getString("name");
-                int age  = rs.getInt("age");
-                String  address = rs.getString("address");
-                float salary = rs.getFloat("salary");
-                System.out.println( "ID = " + id );
-                System.out.println( "NAME = " + name );
-                System.out.println( "AGE = " + age );
-                System.out.println( "ADDRESS = " + address );
-                System.out.println( "SALARY = " + salary );
-                System.out.println();
+
+                System.out.println("Kappa");
+                for(int whichType=1; whichType<=columnCount;whichType++){
+                    try{
+                        Object o = rs.getObject(whichType);
+                        Class klasa = o.getClass();
+                        System.out.println("wartosc obiektu: " + o + "\t\tobiekt typu: " + klasa);
+
+                    }catch(NullPointerException e){
+                        System.out.println("kolumna " + whichType + " \t\t\t\tnie posiada wartosci");
+                    }
+                }
             }
         }
         catch (SQLException e){
